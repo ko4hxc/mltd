@@ -18,9 +18,9 @@ help:	# Help for the Makefile
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 dev: REQUIREMENTS_TXT = requirements.txt requirements-dev.txt
-dev: venv  ## Create a python virtual environment for development of aprsd
+dev: venv  ## Create a python virtual environment for development of mltd
 
-run: venv  ## Create a virtual environment for running aprsd commands
+run: venv  ## Create a virtual environment for running mltd commands
 
 changelog: dev
 	npm i -g auto-changelog
@@ -74,14 +74,8 @@ check: dev ## Code format check with tox and pep8
 fix: dev ## fixes code formatting with gray
 	tox -efmt
 
-server: venv  ## Create the virtual environment and run aprsd server --loglevel DEBUG
-	$(VENV)/aprsd server --loglevel DEBUG
-
-docker: test  ## Make a docker container tagged with hemna6969/aprsd:latest
-	docker build -t hemna6969/aprsd:latest -f docker/Dockerfile docker
-
-docker-dev: test  ## Make a development docker container tagged with hemna6969/aprsd:master
-	docker build -t hemna6969/aprsd:master -f docker/Dockerfile-dev docker
+server: venv  ## Create the virtual environment and run mltd server --loglevel DEBUG
+	$(VENV)/mltd server --loglevel DEBUG
 
 update-requirements: dev  ## Update the requirements.txt and dev-requirements.txt files
 	rm requirements.txt
