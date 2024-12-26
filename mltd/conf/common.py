@@ -58,6 +58,7 @@ tune_opts = [
     ),
 ]
 
+
 def register_opts(config):
     config.register_opts(mltd_opts)
     config.register_group(tune_group)

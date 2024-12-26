@@ -42,7 +42,7 @@ def cli(ctx):
 
 def load_commands():
     from .cmds import (  # noqa
-       tune, 
+        tune,
     )
 
 

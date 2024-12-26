@@ -1,45 +1,45 @@
 import datetime
-import json
+# import json
 import logging
-import math
+# import math
 import signal
 import sys
-import threading
+# import threading
 import time
 
 import click
 import flask
-from flask import request
+# from flask import request
 from flask_httpauth import HTTPBasicAuth
 from flask_socketio import Namespace, SocketIO
-from geopy.distance import geodesic
+# from geopy.distance import geodesic
 from oslo_config import cfg
-from werkzeug.security import check_password_hash, generate_password_hash
-import wrapt
+from werkzeug.security import check_password_hash  # , generate_password_hash
+# import wrapt
 
 import mltd
 from mltd import (
-#    cli_helper, threads, utils,
-    cli_helper, utils,
+    cli_helper, utils, threads,
 )
-#from aprsd.client import client_factory, kiss
+# from aprsd.client import client_factory, kiss
 from mltd.main import cli
-#from aprsd.threads import aprsd as aprsd_threads
-#from aprsd.threads import keep_alive, rx, tx
+# from aprsd.threads import aprsd as aprsd_threads
+# from aprsd.threads import keep_alive, rx, tx
 from mltd.utils import trace
 
 import subprocess
-import yaml
- 
+# import yaml
+
+
 def ticcmd(*args):
-  return subprocess.check_output(['ticcmd'] + list(args))
+    return subprocess.check_output(['ticcmd'] + list(args))
+
 
 CONF = cfg.CONF
 LOG = logging.getLogger()
 auth = HTTPBasicAuth()
 users = {}
 socketio = None
-
 
 
 flask_app = flask.Flask(
@@ -60,10 +60,8 @@ def signal_handler(sig, frame):
     threads.MLTDThreadList().stop_all()
     if "subprocess" not in str(frame):
         time.sleep(1.5)
-        stats.stats_collector.collect()
         LOG.info("Telling flask to bail.")
         signal.signal(signal.SIGTERM, sys.exit(0))
-
 
 
 # HTTPBasicAuth doesn't work on a class method.
@@ -77,41 +75,9 @@ def verify_password(username, password):
         return username
 
 
-
-
 def set_config():
     global users
 
-
-def _get_transport(stats):
-    if CONF.aprs_network.enabled:
-        transport = "aprs-is"
-        aprs_connection = (
-            "APRS-IS Server: <a href='http://status.aprs2.net' >"
-            "{}</a>".format(stats["APRSClientStats"]["server_string"])
-        )
-    elif kiss.KISSClient.is_enabled():
-        transport = kiss.KISSClient.transport()
-        if transport == client.TRANSPORT_TCPKISS:
-            aprs_connection = (
-                "TCPKISS://{}:{}".format(
-                    CONF.kiss_tcp.host,
-                    CONF.kiss_tcp.port,
-                )
-            )
-        elif transport == client.TRANSPORT_SERIALKISS:
-            # for pep8 violation
-            aprs_connection = (
-                "SerialKISS://{}@{} baud".format(
-                    CONF.kiss_serial.device,
-                    CONF.kiss_serial.baudrate,
-                ),
-            )
-    elif CONF.fake_client.enabled:
-        transport = client.TRANSPORT_FAKE
-        aprs_connection = "Fake Client"
-
-    return transport, aprs_connection
 
 class CtlStepNamespace(Namespace):
     """Class to handle the socketio interactions."""
@@ -138,16 +104,15 @@ class CtlStepNamespace(Namespace):
         global socketio
         LOG.info(f"WS: on_send {data}")
         self.request = data
-        
-        new_target = int(data['steps']) if data['cmd']=='UP' else -int(data['steps'])
+        new_target = int(data['steps']) if data['cmd'] == 'UP' else -int(data['steps'])
         LOG.info("Setting target position to {}.".format(new_target))
-        #ticcmd('--resume', '--position-relative', str(new_target))
+        ticcmd('--resume', '--position-relative', str(new_target))
 
     def on_deeng(self, data):
         global socketio
         LOG.info(f"WS: on_deeng {data}")
         self.request = data
-        #ticcmd('--deenergize')
+        ticcmd('--deenergize')
 
     def handle_message(self, data):
         LOG.debug(f"WS Data {data}")
@@ -159,7 +124,6 @@ class CtlStepNamespace(Namespace):
 @auth.login_required
 @flask_app.route("/")
 def index():
-#    stats = _stats()
 
     # For development
     html_template = "index.html"
@@ -191,7 +155,7 @@ def init_flask(loglevel, quiet):
         CtlStepNamespace(
             "/ctlstep",
         ),
-   )
+    )
     return socketio
 
 
@@ -242,15 +206,15 @@ def tune(ctx, flush, port):
 #    keepalive.start()
 
     socketio = init_flask(loglevel, quiet)
-    #rx_thread = rx.APRSDPluginRXThread(
+    # rx_thread = rx.APRSDPluginRXThread(
     #    packet_queue=threads.packet_queue,
-    #)
-    #rx_thread.start()
-    #process_thread = WebChatProcessPacketThread(
+    # )
+    # rx_thread.start()
+    # process_thread = WebChatProcessPacketThread(
     #   packet_queue=threads.packet_queue,
     #    socketio=socketio,
-    #)
-    #process_thread.start()
+    # )
+    # process_thread.start()
 
     LOG.info("Start socketio.run()")
     socketio.run(
