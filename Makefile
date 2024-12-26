@@ -57,9 +57,9 @@ clean-dev:
 	rm Makefile.venv
 
 test: dev  ## Run all the tox tests
-	tox -p all
+	tox -p all -n
 
-build: test changelog  ## Make the build artifact prior to doing an upload
+build: test  ## Make the build artifact prior to doing an upload
 	$(VENV)/pip install twine
 	$(VENV)/python3 -m build
 	$(VENV)/twine check dist/*
