@@ -11,8 +11,8 @@
 # There are some restrictions on what makes a valid project name
 # specification here:
 # https://packaging.python.org/specifications/core-metadata/#name
-name = "aprsd"
-description = "APRSd is a APRS-IS server that can be used to connect to APRS-IS and send and receive APRS packets."
+name = "mltd"
+description = "MLTD MagLoop Tuning Deamon a server to remote tune  my mag loop"
 
 # Specify which Python versions you support. In contrast to the
 # 'Programming Language' classifiers in this file, 'pip install' will check this
@@ -42,22 +42,14 @@ license = {file = "LICENSE"}
 # authored the project, and a valid email address corresponding to the name
 # listed.
 authors = [
-    {name = "Craig Lamparter", email = "craig@craiger.org"},
-    {name = "Walter A. Boring IV", email = "waboring@hemna.com"},
-    {name = "Emre Saglam", email = "emresaglam@gmail.com"},
-    {name = "Jason Martin", email= "jhmartin@toger.us"},
-    {name = "John", email="johng42@users.noreply.github.com"},
-    {name = "Martiros Shakhzadyan", email="vrzh@vrzh.net"},
-    {name = "Zoe Moore", email="zoenb@mailbox.org"},
-    {name = "ranguli", email="hello@joshmurphy.ca"},
+    {name = "Franco Basti", email = "franco.basti@gmail.com"},
 ]
 
 # This should be your name or the names of the organization who currently
 # maintains the project, and a valid email address corresponding to the name
 # listed.
 maintainers = [
-    {name = "Craig Lamparter", email = "craig@craiger.org"},
-    {name = "Walter A. Boring IV", email = "waboring@hemna.com"},
+    {name = "Franco Basti", email = "franco.basti@gmail.com"},
 ]
 
 # This field adds keywords for your project which will appear on the
@@ -67,14 +59,7 @@ maintainers = [
 # by commas, to be used to assist searching for the distribution in a
 # larger catalog.
 keywords = [
-    "aprs",
-    "aprs-is",
-    "aprsd",
-    "aprsd-server",
-    "aprsd-client",
-    "aprsd-socket",
-    "aprsd-socket-server",
-    "aprsd-socket-client",
+    "mltd",
 ]
 
 # Classifiers help users find your project by categorizing it.
@@ -128,28 +113,28 @@ optional-dependencies.dev = {file = ["./requirements-dev.txt"]}
 # maintainers, and where to support the project financially. The key is
 # what's used to render the link text on PyPI.
 [project.urls]
-"Homepage" = "https://github.com/craigerl/aprsd"
-"Bug Reports" = "https://github.com/craigerl/aprsd/issues"
-"Source" = "https://github.com/craigerl/aprsd"
+"Homepage" = "https://github.com/ko4hxc/mltd"
+"Bug Reports" = "https://github.com/ko4hxc/mltd/issues"
+"Source" = "https://github.com/ko4hxc/mltd"
 
 # The following would provide a command line executable called `sample`
 # which executes the function `main` from this package when invoked.
 [project.scripts]
-aprsd = "aprsd.main:main"
+mltd = "mltd.main:main"
 
 [project.entry-points."oslo.config.opts"]
-    "aprsd.conf" = "aprsd.conf.opts:list_opts"
+    "mltd.conf" = "mltd.conf.opts:list_opts"
 
 [project.entry-points."oslo.config.opts.defaults"]
-    "aprsd.conf" = "aprsd.conf:set_lib_defaults"
+    "mltd.conf" = "mltd.conf:set_lib_defaults"
 
 # If you are using a different build backend, you will need to change this.
 [tool.setuptools]
 # If there are data files included in your packages that need to be
 # installed, specify them here.
-py-modules = ["aprsd"]
+py-modules = ["mltd"]
 package-data = {"sample" = ["*.dat"]}
-packages = ["aprsd"]
+packages = ["mltd"]
 
 [build-system]
 requires = [
