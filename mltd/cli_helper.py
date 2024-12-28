@@ -31,7 +31,7 @@ common_options = [
             case_sensitive=False,
         ),
         show_choices=True,
-        help="The log level to use for aprsd.log",
+        help="The log level to use for mltd.log",
     ),
     click.option(
         "-c",
@@ -39,7 +39,7 @@ common_options = [
         "config_file",
         show_default=True,
         default=DEFAULT_CONFIG_FILE,
-        help="The aprsd config file to use for options.",
+        help="The mltd config file to use for options.",
     ),
     click.option(
         "--quiet",

@@ -6,8 +6,8 @@ from oslo_config import cfg
 import requests
 import wrapt
 
-from aprsd import threads
-from aprsd.log import log
+from mltd import threads
+from mltd.log import log
 
 
 CONF = cfg.CONF

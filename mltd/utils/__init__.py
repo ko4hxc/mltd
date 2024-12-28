@@ -117,7 +117,7 @@ def _check_version():
     # check for a newer version
     try:
         check = update_checker.UpdateChecker()
-        result = check.check("aprsd", mltd.__version__)
+        result = check.check("mltd", mltd.__version__)
         if result:
             # Looks like there is an updated version.
             return 1, result
