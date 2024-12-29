@@ -24,7 +24,7 @@ from mltd import (
 # from aprsd.client import client_factory, kiss
 from mltd.main import cli
 # from aprsd.threads import aprsd as aprsd_threads
-# from aprsd.threads import keep_alive, rx, tx
+from mltd.threads import keep_alive
 from mltd.utils import trace
 
 import subprocess
@@ -104,7 +104,7 @@ class CtlStepNamespace(Namespace):
         global socketio
         LOG.info(f"WS: on_send {data}")
         self.request = data
-        new_target = int(data['steps']) if data['cmd'] == 'UP' else -int(data['steps'])
+        new_target = -int(data['steps']) if data['cmd'] == 'UP' else int(data['steps'])
         LOG.info("Setting target position to {}.".format(new_target))
         ticcmd('--resume', '--position-relative', str(new_target))
 
@@ -201,9 +201,9 @@ def tune(ctx, flush, port):
         port = CONF.tune.web_port
 
 
-#    keepalive = keep_alive.KeepAliveThread()
-#    LOG.info("Start KeepAliveThread")
-#    keepalive.start()
+    keepalive = keep_alive.KeepAliveThread()
+    LOG.info("Start KeepAliveThread")
+    keepalive.start()
 
     socketio = init_flask(loglevel, quiet)
     # rx_thread = rx.APRSDPluginRXThread(
